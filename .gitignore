@@ -1,0 +1,13 @@
+*.properties
+.idea
+*.iml
+*.jar
+*.class
+target
+*.log
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.war

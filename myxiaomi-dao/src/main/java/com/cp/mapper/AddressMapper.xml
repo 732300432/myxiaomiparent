@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cp.mapper.AddressMapper">
+    <!--通过uid查询地址-->
+    <select id="findAddressByUid" resultType="Address">
+        select * from tb_address where uid = #{uid}
+    </select>
+    <!--增加地址-->
+    <insert id="addAddress">
+        insert into tb_address(detail,name,phone,uid,level)
+        values(#{detail},#{name},#{phone},#{uid},#{level})
+    </insert>
+    <!--修改默认地址-->
+    <update id="updateDefaultAdd">
+        update tb_address set level = 0 where uid =#{param1};
+        update tb_address set level = 1 where id =#{param2};
+    </update>
+    <!--删除地址-->
+    <delete id="deleteAddressById">
+        delete from tb_address where id =#{aid}
+    </delete>
+    <!--修改地址-->
+    <update id="updateAddress">
+        update tb_address set detail=#{detail},name=#{name},phone=#{phone} where id =${id}
+    </update>
+
+</mapper>

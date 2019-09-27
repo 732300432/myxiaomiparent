@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cp.mapper.CartMapper">
+    <select id="findCartByIdAndPid" resultType="Cart">
+        select * from tb_cart where id =#{param1} and pid=#{param2}
+    </select>
+
+    <insert id="addCart" >
+        insert into tb_cart values(#{id},#{pid},#{num},#{money})
+    </insert>
+
+    <update id="updateCart">
+        update tb_cart set num=#{num},money=#{money} where id= #{id} and pid=#{pid}
+    </update>
+
+    <select id="findCartById" resultType="Cart">
+        select * from tb_cart where id =#{id}
+    </select>
+
+    <delete id="deleteCartByIdAndPid">
+        delete from tb_cart where id =#{param1} and pid = #{param2}
+    </delete>
+
+    <delete id="deleteCartById">
+        delete from tb_cart where id = #{id}
+    </delete>
+
+</mapper>

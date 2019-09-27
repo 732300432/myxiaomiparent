@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cp.mapper.OrderMapper">
+    <insert id="addOrder">
+        insert into tb_order(id,uid,money,status,time,aid)
+        values(#{id},#{uid},#{money},#{status},#{time},#{aid})
+    </insert>
+    <update id="updateStatus">
+        update tb_order set status = #{param1} where oid =#{param2}
+    </update>
+    <select id="findOrderById" resultType="OrderList">
+        select o.id,o.time,a.name,a.phone,a.detail,o.money,o.status
+        from tb_order o inner join tb_address a on o.aid=a.id  where o.uid = #{id}
+    </select>
+</mapper>

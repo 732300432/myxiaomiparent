@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cp.mapper.GoodsMapper">
+    <!--分页待改进-->
+    <select id="findPageByWhere" resultType="Goods">
+        select * from tb_goods
+        <trim prefix="WHERE" prefixOverrides="AND">
+        <if test="condition!=null and condition!=''">
+            ${condition}
+        </if>
+        </trim>
+    </select>
+
+    <select id="findGoodsCount" resultType="long">
+        select count(0) from tb_goods
+        <trim prefix="WHERE" prefixOverrides="AND">
+        <if test="condition!=null and condition!=''">
+            ${condition}
+        </if>
+        </trim>
+    </select>
+
+    <select id="findGoodsById" resultType="Goods">
+        select * from tb_goods where id = #{id}
+    </select>
+
+</mapper>

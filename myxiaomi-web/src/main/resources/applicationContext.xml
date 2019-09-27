@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--导入外部配置文件-->
+    <context:property-placeholder location="classpath:db.properties" />
+    <!--数据源-->
+    <bean id="druid" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <!--<property name="driverClassName" value="${jdbc.driver}"></property>-->
+        <!-- 详细参数 -->
+        <!-- 连接池的最大连接对象 数量 -->
+        <property name="maxActive" value="${jdbc.maxActive}"></property>
+        <!-- 最少要空闲 1 个连接对象 -->
+        <property name="minIdle" value="${jdbc.minIdle}"></property>
+        <!-- 初始化连接池  要创建1个连接对象 -->
+        <property name="initialSize" value="${jdbc.initialSize}"></property>
+        <!-- 当向连接池索要连接时，如果没有空闲连接，最大等待的时长：毫秒 -->
+        <property name="maxWait" value="${jdbc.maxWait}"></property>
+    </bean>
+
+
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+        <!--数据源-->
+        <property name="dataSource" ref="druid"></property>
+        <!--配置缺省类-->
+        <property name="typeAliasesPackage" value="com.cp.pojo"></property>
+        <!--配置插件-->
+        <property name="plugins">
+            <list>
+                <!--分页插件-->
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            <!--自动调整不合理的页码-->
+                            reasonable=true
+                        </value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+
+
+
+    <!--扫描所有dao接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入SQLSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <!--dao接口的位置-->
+        <property name="basePackage" value="com.cp.mapper"></property>
+    </bean>
+
+    <!--注入service  使用注解-->
+
+
+
+    <!--事务管理器-->
+    <bean id="tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据源-->
+        <property name="dataSource" ref="druid"></property>
+    </bean>
+
+    <!--扫描注解-->
+    <context:component-scan base-package="com.cp" />
+    <!--扫描事务注解-->
+    <tx:annotation-driven transaction-manager="tx" />
+
+</beans>
